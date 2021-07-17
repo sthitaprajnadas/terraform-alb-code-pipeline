@@ -1,0 +1,4 @@
+.terraform/
+.terraform.*
+private-key/
+*.out

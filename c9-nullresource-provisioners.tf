@@ -7,26 +7,26 @@ resource "null_resource" "name" {
     host     = aws_eip.bastion_eip.public_ip    
     user     = "ec2-user"
     password = ""
-    private_key = file("private-key/terraform-key-us-east-2.pem")
+    private_key = file("private-key/awsthita-west2.pem")
   }  
 
-## File Provisioner: Copies the terraform-key.pem file to /tmp/terraform-key-us-east-2.pem
+## File Provisioner: Copies the terraform-key.pem file to /tmp/awsthita-west2.pem
   provisioner "file" {
-    source      = "private-key/terraform-key-us-east-2.pem"
-    destination = "/tmp/terraform-key-us-east-2.pem"
+    source      = "private-key/awsthita-west2.pem"
+    destination = "/tmp/awsthita-west2.pem"
   }
 ## Remote Exec Provisioner: Using remote-exec provisioner fix the private key permissions on Bastion Host
   provisioner "remote-exec" {
     inline = [
-      "sudo chmod 400 /tmp/terraform-key-us-east-2.pem"
+      "sudo chmod 400 /tmp/awsthita-west2.pem"
     ]
   }
 ## Local Exec Provisioner:  local-exec provisioner (Creation-Time Provisioner - Triggered during Create Resource)
-  provisioner "local-exec" {
+ /* provisioner "local-exec" {
     command = "echo VPC created on `date` and VPC ID: ${module.vpc.vpc_id} >> creation-time-vpc-id.txt"
     working_dir = "local-exec-output-files/"
     #on_failure = continue
-  }
+  } */
 ## Local Exec Provisioner:  local-exec provisioner (Destroy-Time Provisioner - Triggered during deletion of Resource)
 /*  provisioner "local-exec" {
     command = "echo Destroy time prov `date` >> destroy-time-prov.txt"
